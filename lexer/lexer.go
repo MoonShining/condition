@@ -1,6 +1,6 @@
 package lexer
 
-import "github.com/MoonShining/monkey-lan/token"
+import "github.com/MoonShining/condition/token"
 
 type Lexer struct {
 	input        []rune
@@ -71,8 +71,6 @@ func (l *Lexer) NextToken() token.Token {
 	l.skipWhitespace()
 
 	switch l.ch {
-	case '-':
-		t = newToken(token.MINUS, l.ch)
 	case '!':
 		if l.peekChar() == '=' {
 			l.readChar()
@@ -80,45 +78,53 @@ func (l *Lexer) NextToken() token.Token {
 		} else {
 			t = newToken(token.BANG, l.ch)
 		}
-	case '*':
-		t = newToken(token.ASTERISK, l.ch)
-	case '/':
-		t = newToken(token.SLASH, l.ch)
 	case '>':
-		t = newToken(token.GT, l.ch)
+		if l.peekChar() == '=' {
+			l.readChar()
+			t = token.Token{Type: token.GTE, Literal: ">="}
+		} else {
+			t = newToken(token.GT, l.ch)
+		}
 	case '<':
-		t = newToken(token.LT, l.ch)
+		if l.peekChar() == '=' {
+			l.readChar()
+			t = token.Token{Type: token.LTE, Literal: "<="}
+		} else {
+			t = newToken(token.LT, l.ch)
+		}
 	case '=':
 		// look ahead to decide
 		if l.peekChar() == '=' {
 			l.readChar()
 			t = token.Token{Type: token.EQ, Literal: "=="}
 		} else {
-			t = newToken(token.ASSIGN, l.ch)
+			t = newToken(token.ILLEGAL, l.ch)
 		}
 	case '"':
 		t.Type = token.STRING
 		t.Literal = l.readString()
-	case ';':
-		t = newToken(token.SEMICOLON, l.ch)
 	case '(':
 		t = newToken(token.LPAREN, l.ch)
 	case ')':
 		t = newToken(token.RPAREN, l.ch)
-	case ',':
-		t = newToken(token.COMMA, l.ch)
-	case '+':
-		t = newToken(token.PLUS, l.ch)
-	case '{':
-		t = newToken(token.LBRACE, l.ch)
-	case '}':
-		t = newToken(token.RBRACE, l.ch)
 	case '[':
 		t = newToken(token.LBRACKET, l.ch)
 	case ']':
 		t = newToken(token.RBRACKET, l.ch)
-	case ':':
-		t = newToken(token.COLON, l.ch)
+	case '&':
+		if l.peekChar() == '&' {
+			l.readChar()
+			t = token.Token{Type: token.AND, Literal: "&&"}
+		} else {
+			t = newToken(token.ILLEGAL, l.ch)
+		}
+	case '|':
+		if l.peekChar() == '|' {
+			l.readChar()
+			t = token.Token{Type: token.OR, Literal: "||"}
+		} else {
+			t = newToken(token.ILLEGAL, l.ch)
+		}
 	case 0:
 		t.Literal = ""
 		t.Type = token.EOF

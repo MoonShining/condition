@@ -3,53 +3,38 @@ package token
 const (
 	ILLEGAL = "illegal"
 	EOF     = "EOF"
-	IDENT   = "IDENT" // identifier
-	INT     = "INT"
 
-	ASSIGN   = "="
-	PLUS     = "+"
-	MINUS    = "-"
-	BANG     = "!"
-	ASTERISK = "*"
-	SLASH    = "/"
+	AND = "&&"
+	OR  = "||"
 
-	LT = "<"
-	GT = ">"
+	IDENT  = "IDENT" // identifier
+	INT    = "INT"
+	STRING = "STRING"
+	NULL   = "NULL"
+	TRUE   = "TRUE"
+	FALSE  = "FALSE"
+
+	LT  = "<"
+	LTE = "<="
+	GT  = ">"
+	GTE = ">="
+	IN  = "in"
 
 	EQ     = "=="
 	NOT_EQ = "!="
 
-	COMMA     = ","
-	SEMICOLON = ";"
-	COLON     = ":"
+	BANG = "!"
 
 	LPAREN   = "("
 	RPAREN   = ")"
-	LBRACE   = "{"
-	RBRACE   = "}"
 	LBRACKET = "["
 	RBRACKET = "]"
-
-	FUNCTION = "FUNCTION"
-	LET      = "LET"
-	TRUE     = "TRUE"
-	FALSE    = "FALSE"
-	IF       = "IF"
-	ELSE     = "ELSE"
-	RETURN   = "RETURN"
-
-	STRING = "STRING"
 )
 
 var (
 	keywords = map[string]TokenType{
-		"fn":     FUNCTION,
-		"let":    LET,
-		"true":   TRUE,
-		"false":  FALSE,
-		"if":     IF,
-		"else":   ELSE,
-		"return": RETURN,
+		"true":  TRUE,
+		"false": FALSE,
 	}
 )
 
