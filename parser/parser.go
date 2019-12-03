@@ -82,10 +82,8 @@ func (p *Parser) nextToken() {
 	}
 }
 
-func (p *Parser) Parse() *ast.ExpressionStatement {
-	stmt := &ast.ExpressionStatement{Token: p.curToken}
-	stmt.Expression = p.parseExpression(LOWEST)
-	return stmt
+func (p *Parser) Parse() ast.Expression {
+	return p.parseExpression(LOWEST)
 }
 
 func (p *Parser) parseExpression(precedence int) ast.Expression {

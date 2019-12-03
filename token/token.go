@@ -19,7 +19,6 @@ const (
 	GT     = ">"
 	GTE    = ">="
 	IN     = "in"
-	NOT_IN = "not_in"
 	EQ     = "=="
 	NOT_EQ = "!="
 
@@ -32,11 +31,10 @@ const (
 
 var (
 	keywords = map[string]TokenType{
-		"true":   TRUE,
-		"false":  FALSE,
-		"null":   NULL,
-		"in":     IN,
-		"not_in": NOT_IN,
+		"true":  TRUE,
+		"false": FALSE,
+		"null":  NULL,
+		"in":    IN,
 	}
 )
 
