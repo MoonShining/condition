@@ -76,7 +76,7 @@ func (l *Lexer) NextToken() token.Token {
 			l.readChar()
 			t = token.Token{Type: token.NOT_EQ, Literal: "!="}
 		} else {
-			t = newToken(token.BANG, l.ch)
+			t = newToken(token.ILLEGAL, l.ch)
 		}
 	case '>':
 		if l.peekChar() == '=' {
@@ -103,6 +103,8 @@ func (l *Lexer) NextToken() token.Token {
 	case '"':
 		t.Type = token.STRING
 		t.Literal = l.readString()
+	case ',':
+		t = newToken(token.COMMA, l.ch)
 	case '(':
 		t = newToken(token.LPAREN, l.ch)
 	case ')':

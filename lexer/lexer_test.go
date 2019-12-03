@@ -7,7 +7,7 @@ import (
 
 func TestNextToken(t *testing.T) {
 	input := `
-(a && !(c || d))
+(a && (c || d))
 `
 
 	tests := []struct {
@@ -17,7 +17,6 @@ func TestNextToken(t *testing.T) {
 		{token.LPAREN, "("},
 		{token.IDENT, "a"},
 		{token.AND, "&&"},
-		{token.BANG, "!"},
 		{token.LPAREN, "("},
 		{token.IDENT, "c"},
 		{token.OR, "||"},

@@ -14,27 +14,29 @@ const (
 	TRUE   = "TRUE"
 	FALSE  = "FALSE"
 
-	LT  = "<"
-	LTE = "<="
-	GT  = ">"
-	GTE = ">="
-	IN  = "in"
-
+	LT     = "<"
+	LTE    = "<="
+	GT     = ">"
+	GTE    = ">="
+	IN     = "in"
+	NOT_IN = "not_in"
 	EQ     = "=="
 	NOT_EQ = "!="
-
-	BANG = "!"
 
 	LPAREN   = "("
 	RPAREN   = ")"
 	LBRACKET = "["
 	RBRACKET = "]"
+	COMMA    = ","
 )
 
 var (
 	keywords = map[string]TokenType{
-		"true":  TRUE,
-		"false": FALSE,
+		"true":   TRUE,
+		"false":  FALSE,
+		"null":   NULL,
+		"in":     IN,
+		"not_in": NOT_IN,
 	}
 )
 

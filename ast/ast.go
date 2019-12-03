@@ -2,7 +2,7 @@ package ast
 
 import (
 	"bytes"
-	"github.com/MoonShining/monkey-lan/token"
+	"github.com/MoonShining/condition/token"
 	"strings"
 )
 
@@ -11,33 +11,10 @@ type Node interface {
 	String() string
 }
 
-type Statement interface {
-	Node
-	statementNode()
-}
-
 type Expression interface {
 	Node
 	expressionNode()
 }
-
-type IntegerLiteral struct {
-	Token token.Token
-	Value int64
-}
-
-func (il *IntegerLiteral) expressionNode()      {}
-func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
-func (il *IntegerLiteral) String() string       { return il.Token.Literal }
-
-type Identifier struct {
-	Token token.Token
-	Value string
-}
-
-func (i *Identifier) expressionNode()      {}
-func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
-func (i *Identifier) String() string       { return i.Value }
 
 type ExpressionStatement struct {
 	Token      token.Token
@@ -53,6 +30,44 @@ func (es *ExpressionStatement) String() string {
 	return ""
 }
 
+type InfixExpression struct {
+	Token    token.Token
+	Left     Expression
+	Right    Expression
+	Operator string
+}
+
+func (oe *InfixExpression) expressionNode()      {}
+func (oe *InfixExpression) TokenLiteral() string { return oe.Token.Literal }
+func (oe *InfixExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("(")
+	out.WriteString(oe.Left.String())
+	out.WriteString(" " + oe.Operator + " ")
+	out.WriteString(oe.Right.String())
+	out.WriteString(")")
+
+	return out.String()
+}
+
+type IntegerLiteral struct {
+	Token token.Token
+	Value int64
+}
+
+func (il *IntegerLiteral) expressionNode()      {}
+func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
+func (il *IntegerLiteral) String() string       { return il.Token.Literal }
+
+type Null struct {
+	Token token.Token
+}
+
+func (n *Null) expressionNode()      {}
+func (n *Null) TokenLiteral() string { return n.Token.Literal }
+func (n *Null) String() string       { return n.Token.Literal }
+
 type Boolean struct {
 	Token token.Token
 	Value bool
@@ -62,27 +77,6 @@ func (b *Boolean) expressionNode()      {}
 func (b *Boolean) TokenLiteral() string { return b.Token.Literal }
 func (b *Boolean) String() string       { return b.Token.Literal }
 
-// represent a program
-type Program struct {
-	Statements []Statement
-}
-
-func (p *Program) TokenLiteral() string {
-	if len(p.Statements) > 0 {
-		return p.Statements[0].TokenLiteral()
-	} else {
-		return ""
-	}
-}
-
-func (p *Program) String() string {
-	var out strings.Builder
-	for _, s := range p.Statements {
-		out.WriteString(s.String())
-	}
-	return out.String()
-}
-
 type StringLiteral struct {
 	Token token.Token
 	Value string
@@ -91,6 +85,15 @@ type StringLiteral struct {
 func (sl *StringLiteral) expressionNode()      {}
 func (sl *StringLiteral) TokenLiteral() string { return sl.Token.Literal }
 func (sl *StringLiteral) String() string       { return sl.Token.Literal }
+
+type Identifier struct {
+	Token token.Token
+	Value string
+}
+
+func (i *Identifier) expressionNode()      {}
+func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
+func (i *Identifier) String() string       { return i.Value }
 
 type ArrayLiteral struct {
 	token.Token // the '[' token
@@ -110,25 +113,5 @@ func (al *ArrayLiteral) String() string {
 	out.WriteString("[")
 	out.WriteString(strings.Join(elements, ", "))
 	out.WriteString("]")
-	return out.String()
-}
-
-type IndexExpression struct {
-	Token token.Token // The [ token
-	Left  Expression
-	Index Expression
-}
-
-func (ie *IndexExpression) expressionNode()      {}
-func (ie *IndexExpression) TokenLiteral() string { return ie.Token.Literal }
-func (ie *IndexExpression) String() string {
-	var out bytes.Buffer
-
-	out.WriteString("(")
-	out.WriteString(ie.Left.String())
-	out.WriteString("[")
-	out.WriteString(ie.Index.String())
-	out.WriteString("])")
-
 	return out.String()
 }
