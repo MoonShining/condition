@@ -10,3 +10,13 @@
     c.Match(env) // true
 ```
 
+support operators
+```
+!=
+==
+>
+<
+>=
+<=
+in
+```
